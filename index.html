@@ -5,97 +5,106 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ماموریت تولد</title>
 
-<!-- پیش برقراری ارتباط با CDN (fallback سریع‌تر) -->
+<!-- preconnect for faster CDN loading -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net/npm" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- theme + rendering hints -->
-<meta name="theme-color" content="#fff">
-<meta http-equiv="x-ua-compatible" content="IE=edge">
+<!-- Vazirmatn (mobile-friendly Vazir variant) from jsDelivr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.003/Vazirmatn-font-face.css">
+
+<meta name="theme-color" content="#ffffff">
 <meta name="format-detection" content="telephone=no">
+<meta http-equiv="x-ua-compatible" content="IE=edge">
 
 <style>
-/* ---- IMPORTANT: base font-family is Vazir. We will try to load local font via JS then fallback to CDN.
-   For best result: upload Vazir.woff2 and Vazir.woff to /fonts/ in your repository root. ---- */
-
-/* Provide a temporary fallback while font loads */
+/* ---------- Global font & rendering ---------- */
+/* Use Vazirmatn as main font (fallbacks included) */
 :root{
+  --font-main: "Vazirmatn", "Vazir", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --accent:#FF6F61;
   --accent-2:#E85B50;
   --muted:#6f6f6f;
   --glass: rgba(255,255,255,0.96);
   --radius:18px;
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* A minimal @font-face for local font (browser will use if files exist at /fonts) */
-@font-face {
-  font-family: 'VazirLocal';
-  src: local('Vazir'), url('/fonts/Vazir.woff2') format('woff2'),
-                   url('/fonts/Vazir.woff') format('woff');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Generic reset and promise to use Vazir (either local loaded or CDN) */
-html,body,input,button,textarea,select {
-  font-family: "VazirLocal", Vazir, var(--font-sans) !important;
+/* enforce font across UI elements (important for mobile) */
+html, body, button, input, textarea, select {
+  font-family: var(--font-main) !important;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   text-rendering: optimizeLegibility;
   -webkit-text-size-adjust:100%;
 }
 
-* { box-sizing: border-box; }
+/* basic reset */
+* { box-sizing: border-box; margin:0; padding:0; }
 
-/* Page layout */
-html,body{ height:100%; margin:0; direction:rtl; background:
-  radial-gradient(800px 400px at 10% 10%, rgba(255,231,224,0.55), transparent),
-  linear-gradient(180deg,#FFF7F3,#FFF0E6);
-  display:flex; align-items:center; justify-content:center; padding:16px; color:#222; }
+/* page */
+html,body{
+  height:100%;
+  direction:rtl;
+  background:
+    radial-gradient(800px 400px at 10% 10%, rgba(255,231,224,0.55), transparent),
+    linear-gradient(180deg,#FFF7F3,#FFF0E6);
+  display:flex; align-items:center; justify-content:center;
+  padding:16px; color:#222;
+}
 
-/* Container */
+/* container */
 .container{
-  width:100%; max-width:460px;
+  width:100%;
+  max-width:460px;
   background: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(255,255,255,0.97));
   border-radius:var(--radius);
-  padding:20px; position:relative; overflow:hidden;
+  padding:18px;
+  position:relative;
+  overflow:hidden;
   box-shadow: 0 28px 80px rgba(20,20,20,0.12);
   isolation:isolate;
 }
 
-/* Balloons */
+/* balloons (decorative) */
 .balloon{
-  position:absolute; border-radius:50% 50% 42% 42%;
-  pointer-events:none; transform-origin:center;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.08); opacity:0.96;
+  position:absolute;
+  border-radius:50% 50% 42% 42%;
+  pointer-events:none;
+  transform-origin:center;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+  opacity:0.96;
+  animation: floatA linear infinite;
 }
-@keyframes floatA { 0%{ transform: translateY(0) rotate(0deg); } 50%{ transform: translateY(-14px) rotate(6deg);} 100%{ transform: translateY(0) rotate(0deg);} }
+@keyframes floatA {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(6deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
 
-/* Header */
+/* header */
 .header{ display:flex; align-items:center; gap:12px; justify-content:space-between; z-index:3; }
 .brand{ display:flex; align-items:center; gap:12px; }
-.logo{ width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:16px; background: linear-gradient(180deg,var(--accent),var(--accent-2)); box-shadow: 0 12px 34px rgba(255,111,97,0.16); }
-.title{ margin:0; font-size:24px; color:var(--accent); line-height:1; font-weight:900; }
+.logo{ width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:16px; background: linear-gradient(180deg,var(--accent),var(--accent-2)); box-shadow: 0 12px 34px rgba(255,111,97,0.16); }
+.title{ margin:0; font-size:22px; color:var(--accent); line-height:1; font-weight:900; }
 
-/* Steps */
+/* steps area */
 .steps{ margin-top:14px; position:relative; z-index:4; }
 .step{
-  display:none; opacity:0; transform:translateY(10px) scale(0.996);
+  display:none;
+  opacity:0;
+  transform: translateY(10px) scale(.996);
   transition: opacity 360ms cubic-bezier(.2,.9,.3,1), transform 360ms cubic-bezier(.2,.9,.3,1);
-  border-radius:14px; padding:16px; background: var(--glass); border:1px solid rgba(0,0,0,0.035); box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+  border-radius:14px; padding:14px; background: var(--glass); border:1px solid rgba(0,0,0,0.035); box-shadow: 0 12px 30px rgba(0,0,0,0.04);
 }
-.step.show{ display:block; opacity:1; transform:translateY(0) scale(1); }
-.step.hide{ opacity:0; transform:translateY(-12px) scale(0.99); }
+.step.show{ display:block; opacity:1; transform: translateY(0) scale(1); }
+.step.hide{ opacity:0; transform: translateY(-12px) scale(.99); }
 
-.big{ font-size:18px; font-weight:800; color:#333; margin-bottom:8px; }
+.big{ font-size:17px; font-weight:800; color:#333; margin-bottom:8px; }
 .text{ color:var(--muted); font-size:15px; line-height:1.8; white-space:pre-line; }
 
-/* Buttons (Vazir enforced) */
+/* controls & buttons */
 .controls{ margin-top:14px; display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
 .btn{
-  font-family: "VazirLocal", Vazir, var(--font-sans) !important;
+  font-family: var(--font-main) !important;
   background: linear-gradient(180deg,var(--accent),var(--accent-2));
   color:#fff; border:none; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:800;
   box-shadow: 0 10px 30px rgba(255,111,97,0.12);
@@ -103,41 +112,47 @@ html,body{ height:100%; margin:0; direction:rtl; background:
 .btn:active{ transform: translateY(1px) scale(.997); }
 .btn.ghost{ background:transparent; color:var(--accent); border:1px solid rgba(255,111,97,0.12); box-shadow:none; font-weight:800; }
 
-/* Input: numeric keyboard on mobile */
+/* input numeric (keyboard numeric on mobile) */
 .input{ margin-top:12px; }
 input[type="tel"]{
-  width:100%; padding:12px 14px; border-radius:12px; border:1.5px solid #e9e9e9; font-size:15px;
-  text-align:center; direction:ltr; font-family: "VazirLocal", Vazir, var(--font-sans) !important;
+  width:100%;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1.5px solid #e9e9e9;
+  font-size:15px;
+  text-align:center;
+  direction:ltr;
+  font-family: var(--font-main) !important;
+  -webkit-appearance:none;
+  -moz-appearance:textfield;
 }
-input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !important; color:#9aa0a6; }
+input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
 
-/* Status and progress */
+/* status & progress */
 .status{ margin-top:10px; font-weight:800; }
 .status.ok{ color:#198754; }
 .status.bad{ color:#d64545; }
 .progress{ margin-top:10px; color:var(--muted); font-size:13px; }
 
-/* Confetti */
+/* confetti */
 .confetti-root{ position:absolute; inset:0; pointer-events:none; z-index:2; overflow:hidden; }
-
-/* fall animation for confetti pieces */
 @keyframes fall { 0%{ transform: translateY(-15vh) rotate(0deg);} 100%{ transform: translateY(110vh) rotate(540deg);} }
 
-/* Responsive tweaks */
-@media (max-width:420px){ .container{ padding:16px; border-radius:14px; } .title{ font-size:22px; } .logo{ width:48px; height:48px; font-size:15px; } input[type="tel"]{ padding:10px; } }
+/* responsive tweaks */
+@media (max-width:420px){ .container{ padding:14px; } .title{ font-size:20px; } .logo{ width:46px; height:46px; font-size:14px; } input[type="tel"]{ padding:10px; } }
 </style>
 </head>
 <body>
 
 <div class="container" role="main" aria-live="polite">
 
-  <!-- decorative balloons around frame -->
-  <div class="balloon" style="left:-20px; top:-40px; width:120px; height:150px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation:floatA 6s ease-in-out infinite;"></div>
-  <div class="balloon" style="left:340px; top:-28px; width:96px; height:122px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation:floatA 5.2s ease-in-out infinite;"></div>
-  <div class="balloon" style="left:-40px; bottom:-36px; width:88px; height:114px; background:linear-gradient(180deg,#8EC5FF,#6DBCFD); animation:floatA 6.2s ease-in-out infinite;"></div>
-  <div class="balloon" style="left:60%; bottom:-46px; width:72px; height:94px; background:linear-gradient(180deg,#6EE7B7,#4FD1A8); animation:floatA 5.6s ease-in-out infinite;"></div>
-  <div class="balloon" style="left:10%; top:12%; width:46px; height:62px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation:floatA 4.4s ease-in-out infinite;"></div>
-  <div class="balloon" style="left:78%; top:8%; width:56px; height:76px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation:floatA 4s ease-in-out infinite;"></div>
+  <!-- decorative balloons -->
+  <div class="balloon" style="left:-24px; top:-42px; width:120px; height:150px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation-duration:6s;"></div>
+  <div class="balloon" style="left:340px; top:-28px; width:96px; height:122px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation-duration:5.2s;"></div>
+  <div class="balloon" style="left:-40px; bottom:-36px; width:88px; height:114px; background:linear-gradient(180deg,#8EC5FF,#6DBCFD); animation-duration:6.2s;"></div>
+  <div class="balloon" style="left:60%; bottom:-46px; width:72px; height:94px; background:linear-gradient(180deg,#6EE7B7,#4FD1A8); animation-duration:5.6s;"></div>
+  <div class="balloon" style="left:10%; top:12%; width:46px; height:62px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation-duration:4.4s;"></div>
+  <div class="balloon" style="left:78%; top:8%; width:56px; height:76px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation-duration:4s;"></div>
 
   <!-- header -->
   <div class="header">
@@ -153,7 +168,7 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
   <!-- steps -->
   <div class="steps">
 
-    <!-- step 0 -->
+    <!-- step 0: greeting -->
     <section id="step-0" class="step show" aria-label="خوش آمد">
       <div class="big">سلام محسن!</div>
       <div class="text">امروز قراره وارد یک مأموریت بشی.</div>
@@ -162,8 +177,8 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
       </div>
     </section>
 
-    <!-- step 1 -->
-    <section id="step-1" class="step" aria-label="توضیح کلی">
+    <!-- step 1: overview -->
+    <section id="step-1" class="step" aria-label="توضیحات کلی">
       <div class="big">چطور قراره پیش بریم</div>
       <div class="text">برای رسیدن به کادو باید چند مرحله را پشت سر بگذاری. هر مرحله یک بخش جداست: ابتدا توضیح می‌دهیم، سپس باید یک کار یا سؤال را حل کنی و در نهایت اگر موفق شدی بخش بعدی باز می‌شود. هر تکه که دیدی دکمهٔ «ادامه» را بزن تا بریم سراغ بخش بعد.</div>
       <div class="controls">
@@ -172,7 +187,7 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
       </div>
     </section>
 
-    <!-- step 2 -->
+    <!-- step 2: introduce quiz -->
     <section id="step-2" class="step" aria-label="معرفی مرحله اول">
       <div class="big">مرحلهٔ اول — آزمون هوش</div>
       <div class="text">در این مرحله باید به ۳ سؤال عددی پاسخ دهی. هر سؤال جداست: بعد از دیدن هر سؤال، پاسخ را وارد کن و روی «ثبت پاسخ» بزن. اگر جواب درست بود، به سؤال بعدی می‌روی. اگر غلط بود پیام «نادرست!» نمایش داده می‌شود و می‌توانی دوباره امتحان کنی.</div>
@@ -182,7 +197,7 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
       </div>
     </section>
 
-    <!-- step 3 (q1) -->
+    <!-- step 3: q1 -->
     <section id="step-3" class="step" aria-label="سوال اول">
       <div class="big">سؤال ۱</div>
       <div class="text">
@@ -203,7 +218,7 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
       <div class="progress">سوال 1 از 3</div>
     </section>
 
-    <!-- step 4 (q2) -->
+    <!-- step 4: q2 -->
     <section id="step-4" class="step" aria-label="سوال دوم">
       <div class="big">سؤال ۲</div>
       <div class="text">
@@ -223,7 +238,7 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
       <div class="progress">سوال 2 از 3</div>
     </section>
 
-    <!-- step 5 (q3) -->
+    <!-- step 5: q3 -->
     <section id="step-5" class="step" aria-label="سوال سوم">
       <div class="big">سؤال ۳</div>
       <div class="text">
@@ -243,12 +258,12 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
       <div class="progress">سوال 3 از 3</div>
     </section>
 
-    <!-- step 6 success -->
+    <!-- step 6: success -->
     <section id="step-6" class="step" aria-label="موفقیت">
       <div class="big">تبریک — مرحلهٔ اول با موفقیت گذرانده شد</div>
-      <div class="text">شما با موفقیت مرحلهٔ اول را رد کردی و الان مرحلهٔ دومه!  
+      <div class="text">شما با موفقیت مرحلهٔ اول را رد کردی و الان مرحلهٔ دومه!
       <br><br>
-      برای ادامه باید دنبال یک QR جدید بگردی.  
+      برای ادامه باید دنبال یک QR جدید بگردی.
       <br><br>
       <strong>راهنمایی (رمزی):</strong> برو جایی از خونه که ماشین ها توش پارک شدند و بقل جایی که آب رد میشه و میاد به بالا. رو خوب نگاه کن.
       <br><br>
@@ -258,61 +273,18 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
         <button class="btn" id="done-btn">باشه، می‌روم</button>
       </div>
     </section>
-  </div>
 
+  </div> <!-- steps -->
+
+  <!-- confetti root -->
   <div class="confetti-root" id="confetti"></div>
-</div>
+</div> <!-- container -->
 
 <script>
-/* Robust font loading:
-   1) Try to load local /fonts/Vazir.woff2 via FontFace API (best).
-   2) If not available or fails, inject CDN CSS from jsDelivr as fallback.
+/* UI + font robustness (Vazirmatn from CDN is already linked).
+   Numeric keyboard enforced via input attributes (type="tel" inputmode="numeric" pattern="[0-9]*").
 */
-(async function(){
-  const CDN_CSS = 'https://cdn.jsdelivr.net/npm/vazir-font@30.1.0/dist/font-face.css';
 
-  async function tryLoadLocal() {
-    try {
-      // check if the local file exists quickly
-      const resp = await fetch('/fonts/Vazir.woff2', { method: 'HEAD' });
-      if (!resp.ok) return false;
-      // load via FontFace
-      const f = new FontFace('VazirLocal', 'url(/fonts/Vazir.woff2) format("woff2")', { weight: '400' });
-      await f.load();
-      document.fonts.add(f);
-      // also register a generic Vazir name fallback for CSS that references 'Vazir'
-      const f2 = new FontFace('Vazir', 'url(/fonts/Vazir.woff2) format("woff2")', { weight: '400' });
-      await f2.load();
-      document.fonts.add(f2);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  function injectCDN() {
-    if(document.querySelector('link[data-vazir-cdn]')) return;
-    const l = document.createElement('link');
-    l.rel = 'stylesheet';
-    l.href = CDN_CSS;
-    l.setAttribute('data-vazir-cdn', '1');
-    document.head.appendChild(l);
-  }
-
-  const ok = await tryLoadLocal();
-  if (!ok) {
-    // fallback to CDN
-    injectCDN();
-  }
-
-  // Force use of Vazir across critical elements after small delay (helps when CDN loads)
-  setTimeout(()=> {
-    document.documentElement.style.fontFamily = '"VazirLocal", Vazir, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
-  }, 250);
-
-})();
-
-/* UI logic for steps & questions (unchanged UX, keyboard numeric ensured by input type=tel/inputmode) */
 (function(){
   const steps = ['step-0','step-1','step-2','step-3','step-4','step-5','step-6'];
   let current = 0;
@@ -327,16 +299,19 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
       from.classList.remove('show','hide');
       to.classList.add('show');
       current = i;
-      if(i >= 3 && i <=5){
+      if(i >=3 && i <=5){
         const id = ['input-q1','input-q2','input-q3'][i-3];
         setTimeout(()=> { const el = document.getElementById(id); if(el) el.focus(); }, 220);
       }
     }, 220);
   }
 
+  // next/back
   document.querySelectorAll('[data-action="next"]').forEach(btn => btn.addEventListener('click', ()=> showStep(Math.min(current+1, steps.length-1))));
   document.querySelectorAll('[data-action="back"]').forEach(btn => btn.addEventListener('click', ()=> showStep(Math.max(current-1,0))));
-  const startBtn = document.getElementById('start-quiz'); if(startBtn) startBtn.addEventListener('click', ()=> showStep(3));
+
+  const startBtn = document.getElementById('start-quiz');
+  if(startBtn) startBtn.addEventListener('click', ()=> showStep(3));
 
   const CORRECT = { q1: 73*4 -1, q2:100, q3:15 };
 
@@ -357,6 +332,7 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
     el.classList.toggle('bad', !ok);
   }
 
+  // Q1
   document.getElementById('submit-q1').addEventListener('click', ()=>{
     const v = readNum('input-q1'), el = document.getElementById('input-q1');
     if(v === null){ setStatus('status-q1', false, 'لطفاً یک عدد وارد کن.'); el.classList.add('err'); return; }
@@ -364,6 +340,7 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
     if(v === CORRECT.q1){ setStatus('status-q1', true, 'درست! آمادهٔ سوال بعدی...'); setTimeout(()=> showStep(4), 600); } else { setStatus('status-q1', false, 'نادرست! دوباره تلاش کن.'); el.classList.add('err'); }
   });
 
+  // Q2
   document.getElementById('submit-q2').addEventListener('click', ()=>{
     const v = readNum('input-q2'), el = document.getElementById('input-q2');
     if(v === null){ setStatus('status-q2', false, 'لطفاً یک عدد وارد کن.'); el.classList.add('err'); return; }
@@ -371,39 +348,52 @@ input::placeholder{ font-family: "VazirLocal", Vazir, var(--font-sans) !importan
     if(v === CORRECT.q2){ setStatus('status-q2', true, 'درست! آمادهٔ سوال بعدی...'); setTimeout(()=> showStep(5), 600); } else { setStatus('status-q2', false, 'نادرست! دوباره تلاش کن.'); el.classList.add('err'); }
   });
 
+  // Q3
   document.getElementById('submit-q3').addEventListener('click', ()=>{
     const v = readNum('input-q3'), el = document.getElementById('input-q3');
     if(v === null){ setStatus('status-q3', false, 'لطفاً یک عدد وارد کن.'); el.classList.add('err'); return; }
     el.classList.remove('err');
-    if(v === CORRECT.q3){ setStatus('status-q3', true, 'درست! تبریک — همهٔ سوال‌ها پاسخ داده شد.'); setTimeout(()=> { showStep(6); launchConfetti(); }, 700); } else { setStatus('status-q3', false, 'نادرست! دوباره تلاش کن.'); el.classList.add('err'); }
+    if(v === CORRECT.q3){
+      setStatus('status-q3', true, 'درست! تبریک — همهٔ سوال‌ها پاسخ داده شد.');
+      setTimeout(()=> { showStep(6); launchConfetti(); }, 700);
+    } else {
+      setStatus('status-q3', false, 'نادرست! دوباره تلاش کن.'); el.classList.add('err');
+    }
   });
 
+  // done
   document.getElementById('done-btn').addEventListener('click', ()=> { alert('برای ادامه: دنبال QR دوم بگرد و آن را اسکن کن تا فعالیت بعدی نمایش داده شود.'); });
 
+  // Enter submits current question
   [['input-q1','submit-q1'],['input-q2','submit-q2'],['input-q3','submit-q3']].forEach(pair=>{
-    const input = document.getElementById(pair[0]); if(!input) return; input.addEventListener('keydown', (e)=> { if(e.key === 'Enter') document.getElementById(pair[1]).click(); });
+    const input = document.getElementById(pair[0]);
+    if(!input) return;
+    input.addEventListener('keydown', (e)=> { if(e.key === 'Enter') document.getElementById(pair[1]).click(); });
   });
 
+  // confetti
   function launchConfetti(){
     const root = document.getElementById('confetti'); root.innerHTML = '';
     const colors = ['#FF6F61','#FFD166','#6EE7B7','#8EC5FF','#F6A5C0','#FFD9B6'];
     for(let i=0;i<70;i++){
       const el = document.createElement('div');
-      el.style.position = 'absolute'; el.style.left = (Math.random()*100)+'%';
+      el.style.position = 'absolute';
+      el.style.left = (Math.random()*100)+'%';
       el.style.top = (-10 - Math.random()*40) + 'vh';
-      el.style.width = (6 + Math.random()*12) + 'px'; el.style.height = (10 + Math.random()*20) + 'px';
-      el.style.background = colors[Math.floor(Math.random()*colors.length)]; el.style.borderRadius = '3px';
-      el.style.opacity = '0.95'; el.style.transform = 'rotate(' + (Math.random()*360) + 'deg)';
+      el.style.width = (6 + Math.random()*12) + 'px';
+      el.style.height = (10 + Math.random()*20) + 'px';
+      el.style.background = colors[Math.floor(Math.random()*colors.length)];
+      el.style.borderRadius = '3px';
+      el.style.opacity = '0.95';
+      el.style.transform = 'rotate(' + (Math.random()*360) + 'deg)';
       el.style.animation = 'fall ' + (2 + Math.random()*3) + 's linear forwards';
       root.appendChild(el);
     }
     setTimeout(()=> { root.innerHTML = ''; }, 7000);
   }
 
-  // set initial current step (step-0 visible by default)
-  const steps = ['step-0','step-1','step-2','step-3','step-4','step-5','step-6'];
-  for(let i=0;i<steps.length;i++){ const el = document.getElementById(steps[i]); if(el && el.classList.contains('show')) { break; } }
-
+  // initial: determine which is visible (step-0 present)
+  for(let i=0;i<steps.length;i++){ const el = document.getElementById(steps[i]); if(el && el.classList.contains('show')){ current = i; break; } }
 })();
 </script>
 </body>
