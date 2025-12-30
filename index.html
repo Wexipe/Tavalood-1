@@ -5,114 +5,140 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ماموریت تولد</title>
 
-<!-- preconnect for faster CDN loading -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<!-- Vazirmatn (mobile-friendly Vazir variant) from jsDelivr -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.003/Vazirmatn-font-face.css">
-
-<meta name="theme-color" content="#ffffff">
-<meta name="format-detection" content="telephone=no">
-<meta http-equiv="x-ua-compatible" content="IE=edge">
+<!-- فونت وزیر -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir-font-face.css">
 
 <style>
-/* ---------- Global font & rendering ---------- */
-/* Use Vazirmatn as main font (fallbacks included) */
 :root{
-  --font-main: "Vazirmatn", "Vazir", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bg1:#FFF7F3;
+  --bg2:#FFF0E6;
   --accent:#FF6F61;
   --accent-2:#E85B50;
   --muted:#6f6f6f;
   --glass: rgba(255,255,255,0.96);
   --radius:18px;
+  --font: "Vazir", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-/* enforce font across UI elements (important for mobile) */
-html, body, button, input, textarea, select {
-  font-family: var(--font-main) !important;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  text-rendering: optimizeLegibility;
-  -webkit-text-size-adjust:100%;
-}
-
-/* basic reset */
-* { box-sizing: border-box; margin:0; padding:0; }
-
-/* page */
+/* پایه */
+* { box-sizing: border-box; }
 html,body{
   height:100%;
+  margin:0;
   direction:rtl;
+  font-family: var(--font);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
   background:
     radial-gradient(800px 400px at 10% 10%, rgba(255,231,224,0.55), transparent),
-    linear-gradient(180deg,#FFF7F3,#FFF0E6);
-  display:flex; align-items:center; justify-content:center;
-  padding:16px; color:#222;
+    linear-gradient(180deg,var(--bg1), var(--bg2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  color:#222;
 }
 
-/* container */
+/* قاب اصلی */
 .container{
   width:100%;
   max-width:460px;
   background: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(255,255,255,0.97));
   border-radius:var(--radius);
-  padding:18px;
+  padding:20px;
   position:relative;
   overflow:hidden;
   box-shadow: 0 28px 80px rgba(20,20,20,0.12);
-  isolation:isolate;
 }
 
-/* balloons (decorative) */
+/* بیشتر بادکنک‌ها دور کادر */
 .balloon{
   position:absolute;
   border-radius:50% 50% 42% 42%;
   pointer-events:none;
   transform-origin:center;
+  animation:floatCalc linear infinite;
   box-shadow: 0 10px 26px rgba(0,0,0,0.08);
-  opacity:0.96;
-  animation: floatA linear infinite;
+  opacity:0.95;
 }
-@keyframes floatA {
-  0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-14px) rotate(6deg); }
-  100% { transform: translateY(0) rotate(0deg); }
+@keyframes floatCalc {
+  0%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-14px) rotate(6deg); }
+  100%{ transform: translateY(0) rotate(0deg); }
 }
 
 /* header */
-.header{ display:flex; align-items:center; gap:12px; justify-content:space-between; z-index:3; }
-.brand{ display:flex; align-items:center; gap:12px; }
-.logo{ width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:16px; background: linear-gradient(180deg,var(--accent),var(--accent-2)); box-shadow: 0 12px 34px rgba(255,111,97,0.16); }
-.title{ margin:0; font-size:22px; color:var(--accent); line-height:1; font-weight:900; }
+.header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  justify-content:space-between;
+  position:relative;
+  z-index:3;
+}
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.logo{
+  width:60px; height:60px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:900; font-size:18px;
+  background: linear-gradient(180deg,var(--accent),var(--accent-2));
+  box-shadow: 0 12px 34px rgba(255,111,97,0.16);
+}
+.title{
+  margin:0; font-size:28px; color:var(--accent); line-height:1; font-weight:900;
+}
+/* header right empty intentionally */
+.header-right{ width:20px; height:20px; }
 
-/* steps area */
+/* مراحل */
 .steps{ margin-top:14px; position:relative; z-index:4; }
 .step{
   display:none;
   opacity:0;
-  transform: translateY(10px) scale(.996);
+  transform: translateY(10px) scale(0.996);
   transition: opacity 360ms cubic-bezier(.2,.9,.3,1), transform 360ms cubic-bezier(.2,.9,.3,1);
-  border-radius:14px; padding:14px; background: var(--glass); border:1px solid rgba(0,0,0,0.035); box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+  border-radius:14px;
+  padding:16px;
+  background: var(--glass);
+  border:1px solid rgba(0,0,0,0.035);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.04);
 }
-.step.show{ display:block; opacity:1; transform: translateY(0) scale(1); }
-.step.hide{ opacity:0; transform: translateY(-12px) scale(.99); }
+.step.show{
+  display:block;
+  opacity:1;
+  transform: translateY(0) scale(1);
+}
+.step.hide{
+  opacity:0;
+  transform: translateY(-12px) scale(0.99);
+}
 
-.big{ font-size:17px; font-weight:800; color:#333; margin-bottom:8px; }
+/* متن‌ها */
+.big{ font-size:18px; font-weight:800; color:#333; margin-bottom:8px; }
 .text{ color:var(--muted); font-size:15px; line-height:1.8; white-space:pre-line; }
 
-/* controls & buttons */
+/* کنترل‌ها و دکمه‌ها */
 .controls{ margin-top:14px; display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
 .btn{
-  font-family: var(--font-main) !important;
+  font-family: var(--font);
   background: linear-gradient(180deg,var(--accent),var(--accent-2));
-  color:#fff; border:none; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:800;
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:800;
   box-shadow: 0 10px 30px rgba(255,111,97,0.12);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
 }
 .btn:active{ transform: translateY(1px) scale(.997); }
+.btn:hover{ filter:brightness(1.03); box-shadow: 0 14px 38px rgba(255,111,97,0.16); }
 .btn.ghost{ background:transparent; color:var(--accent); border:1px solid rgba(255,111,97,0.12); box-shadow:none; font-weight:800; }
 
-/* input numeric (keyboard numeric on mobile) */
+/* فیلد ورودی — کیبورد عددی در موبایل */
 .input{ margin-top:12px; }
 input[type="tel"]{
   width:100%;
@@ -122,33 +148,39 @@ input[type="tel"]{
   font-size:15px;
   text-align:center;
   direction:ltr;
-  font-family: var(--font-main) !important;
-  -webkit-appearance:none;
-  -moz-appearance:textfield;
+  font-family: Vazir, sans-serif;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
 }
-input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
+input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
 
-/* status & progress */
+/* وضعیت پاسخ */
 .status{ margin-top:10px; font-weight:800; }
 .status.ok{ color:#198754; }
 .status.bad{ color:#d64545; }
+
+/* progress */
 .progress{ margin-top:10px; color:var(--muted); font-size:13px; }
 
 /* confetti */
 .confetti-root{ position:absolute; inset:0; pointer-events:none; z-index:2; overflow:hidden; }
-@keyframes fall { 0%{ transform: translateY(-15vh) rotate(0deg);} 100%{ transform: translateY(110vh) rotate(540deg);} }
 
-/* responsive tweaks */
-@media (max-width:420px){ .container{ padding:14px; } .title{ font-size:20px; } .logo{ width:46px; height:46px; font-size:14px; } input[type="tel"]{ padding:10px; } }
+/* small responsiveness */
+@media (max-width:420px){
+  .container{ padding:16px; border-radius:14px; }
+  .title{ font-size:24px; }
+  .logo{ width:52px; height:52px; font-size:16px; }
+  input[type="tel"]{ padding:10px; }
+}
 </style>
 </head>
 <body>
 
 <div class="container" role="main" aria-live="polite">
 
-  <!-- decorative balloons -->
-  <div class="balloon" style="left:-24px; top:-42px; width:120px; height:150px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation-duration:6s;"></div>
-  <div class="balloon" style="left:340px; top:-28px; width:96px; height:122px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation-duration:5.2s;"></div>
+  <!-- more balloons around the frame -->
+  <div class="balloon" style="left:-18px; top:-30px; width:120px; height:150px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation-duration:6s;"></div>
+  <div class="balloon" style="left:320px; top:-28px; width:96px; height:122px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation-duration:5.2s;"></div>
   <div class="balloon" style="left:-40px; bottom:-36px; width:88px; height:114px; background:linear-gradient(180deg,#8EC5FF,#6DBCFD); animation-duration:6.2s;"></div>
   <div class="balloon" style="left:60%; bottom:-46px; width:72px; height:94px; background:linear-gradient(180deg,#6EE7B7,#4FD1A8); animation-duration:5.6s;"></div>
   <div class="balloon" style="left:10%; top:12%; width:46px; height:62px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation-duration:4.4s;"></div>
@@ -165,10 +197,10 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
     <div class="header-right" aria-hidden="true"></div>
   </div>
 
-  <!-- steps -->
+  <!-- steps content -->
   <div class="steps">
 
-    <!-- step 0: greeting -->
+    <!-- step 0 -->
     <section id="step-0" class="step show" aria-label="خوش آمد">
       <div class="big">سلام محسن!</div>
       <div class="text">امروز قراره وارد یک مأموریت بشی.</div>
@@ -177,8 +209,8 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
       </div>
     </section>
 
-    <!-- step 1: overview -->
-    <section id="step-1" class="step" aria-label="توضیحات کلی">
+    <!-- step 1 -->
+    <section id="step-1" class="step" aria-label="توضیح کلی">
       <div class="big">چطور قراره پیش بریم</div>
       <div class="text">برای رسیدن به کادو باید چند مرحله را پشت سر بگذاری. هر مرحله یک بخش جداست: ابتدا توضیح می‌دهیم، سپس باید یک کار یا سؤال را حل کنی و در نهایت اگر موفق شدی بخش بعدی باز می‌شود. هر تکه که دیدی دکمهٔ «ادامه» را بزن تا بریم سراغ بخش بعد.</div>
       <div class="controls">
@@ -187,7 +219,7 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
       </div>
     </section>
 
-    <!-- step 2: introduce quiz -->
+    <!-- step 2 -->
     <section id="step-2" class="step" aria-label="معرفی مرحله اول">
       <div class="big">مرحلهٔ اول — آزمون هوش</div>
       <div class="text">در این مرحله باید به ۳ سؤال عددی پاسخ دهی. هر سؤال جداست: بعد از دیدن هر سؤال، پاسخ را وارد کن و روی «ثبت پاسخ» بزن. اگر جواب درست بود، به سؤال بعدی می‌روی. اگر غلط بود پیام «نادرست!» نمایش داده می‌شود و می‌توانی دوباره امتحان کنی.</div>
@@ -197,7 +229,7 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
       </div>
     </section>
 
-    <!-- step 3: q1 -->
+    <!-- step 3 (q1) -->
     <section id="step-3" class="step" aria-label="سوال اول">
       <div class="big">سؤال ۱</div>
       <div class="text">
@@ -218,7 +250,7 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
       <div class="progress">سوال 1 از 3</div>
     </section>
 
-    <!-- step 4: q2 -->
+    <!-- step 4 (q2) -->
     <section id="step-4" class="step" aria-label="سوال دوم">
       <div class="big">سؤال ۲</div>
       <div class="text">
@@ -238,7 +270,7 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
       <div class="progress">سوال 2 از 3</div>
     </section>
 
-    <!-- step 5: q3 -->
+    <!-- step 5 (q3) -->
     <section id="step-5" class="step" aria-label="سوال سوم">
       <div class="big">سؤال ۳</div>
       <div class="text">
@@ -258,15 +290,15 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
       <div class="progress">سوال 3 از 3</div>
     </section>
 
-    <!-- step 6: success -->
+    <!-- step 6 success + yard hint -->
     <section id="step-6" class="step" aria-label="موفقیت">
       <div class="big">تبریک — مرحلهٔ اول با موفقیت گذرانده شد</div>
-      <div class="text">شما با موفقیت مرحلهٔ اول را رد کردی و الان مرحلهٔ دومه!
-      <br><br>
-      برای ادامه باید دنبال یک QR جدید بگردی.
-      <br><br>
+      <div class="text">شما با موفقیت مرحلهٔ اول را رد کردی و الان مرحلهٔ دومه!  
+      <br>
+      برای ادامه باید دنبال یک QR جدید بگردی.  
+      <br>
       <strong>راهنمایی (رمزی):</strong> برو جایی از خونه که ماشین ها توش پارک شدند و بقل جایی که آب رد میشه و میاد به بالا. رو خوب نگاه کن.
-      <br><br>
+      <br>
       وقتی QR دوم را اسکن کنی، فعالیتِ بعدی نمایش داده خواهد شد.</div>
 
       <div class="controls">
@@ -278,41 +310,47 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
 
   <!-- confetti root -->
   <div class="confetti-root" id="confetti"></div>
+
 </div> <!-- container -->
 
 <script>
-/* UI + font robustness (Vazirmatn from CDN is already linked).
-   Numeric keyboard enforced via input attributes (type="tel" inputmode="numeric" pattern="[0-9]*").
-*/
-
 (function(){
   const steps = ['step-0','step-1','step-2','step-3','step-4','step-5','step-6'];
   let current = 0;
 
+  // show step with animated transition
   function showStep(i){
     if(i === current) return;
     const from = document.getElementById(steps[current]);
     const to = document.getElementById(steps[i]);
     if(!to) return;
+    // animate out
     from.classList.add('hide');
     setTimeout(()=>{
       from.classList.remove('show','hide');
       to.classList.add('show');
       current = i;
-      if(i >=3 && i <=5){
+      // focus input if question
+      if(i >= 3 && i <=5){
         const id = ['input-q1','input-q2','input-q3'][i-3];
-        setTimeout(()=> { const el = document.getElementById(id); if(el) el.focus(); }, 220);
+        setTimeout(()=> { const el = document.getElementById(id); if(el) el.focus(); }, 200);
       }
     }, 220);
   }
 
-  // next/back
-  document.querySelectorAll('[data-action="next"]').forEach(btn => btn.addEventListener('click', ()=> showStep(Math.min(current+1, steps.length-1))));
-  document.querySelectorAll('[data-action="back"]').forEach(btn => btn.addEventListener('click', ()=> showStep(Math.max(current-1,0))));
+  // setup next/back controls
+  document.querySelectorAll('[data-action="next"]').forEach(btn=>{
+    btn.addEventListener('click', ()=> showStep(Math.min(current+1, steps.length-1)));
+  });
+  document.querySelectorAll('[data-action="back"]').forEach(btn=>{
+    btn.addEventListener('click', ()=> showStep(Math.max(current-1,0)));
+  });
 
+  // start quiz
   const startBtn = document.getElementById('start-quiz');
   if(startBtn) startBtn.addEventListener('click', ()=> showStep(3));
 
+  // correct answers
   const CORRECT = { q1: 73*4 -1, q2:100, q3:15 };
 
   function readNum(id){
@@ -334,51 +372,86 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
 
   // Q1
   document.getElementById('submit-q1').addEventListener('click', ()=>{
-    const v = readNum('input-q1'), el = document.getElementById('input-q1');
-    if(v === null){ setStatus('status-q1', false, 'لطفاً یک عدد وارد کن.'); el.classList.add('err'); return; }
+    const v = readNum('input-q1');
+    const el = document.getElementById('input-q1');
+    if(v === null){
+      setStatus('status-q1', false, 'لطفاً یک عدد وارد کن.');
+      el.classList.add('err');
+      return;
+    }
     el.classList.remove('err');
-    if(v === CORRECT.q1){ setStatus('status-q1', true, 'درست! آمادهٔ سوال بعدی...'); setTimeout(()=> showStep(4), 600); } else { setStatus('status-q1', false, 'نادرست! دوباره تلاش کن.'); el.classList.add('err'); }
+    if(v === CORRECT.q1){
+      setStatus('status-q1', true, 'درست! آمادهٔ سوال بعدی...');
+      setTimeout(()=> showStep(4), 600);
+    } else {
+      setStatus('status-q1', false, 'نادرست! دوباره تلاش کن.');
+      el.classList.add('err');
+    }
   });
 
   // Q2
   document.getElementById('submit-q2').addEventListener('click', ()=>{
-    const v = readNum('input-q2'), el = document.getElementById('input-q2');
-    if(v === null){ setStatus('status-q2', false, 'لطفاً یک عدد وارد کن.'); el.classList.add('err'); return; }
+    const v = readNum('input-q2');
+    const el = document.getElementById('input-q2');
+    if(v === null){
+      setStatus('status-q2', false, 'لطفاً یک عدد وارد کن.');
+      el.classList.add('err');
+      return;
+    }
     el.classList.remove('err');
-    if(v === CORRECT.q2){ setStatus('status-q2', true, 'درست! آمادهٔ سوال بعدی...'); setTimeout(()=> showStep(5), 600); } else { setStatus('status-q2', false, 'نادرست! دوباره تلاش کن.'); el.classList.add('err'); }
+    if(v === CORRECT.q2){
+      setStatus('status-q2', true, 'درست! آمادهٔ سوال بعدی...');
+      setTimeout(()=> showStep(5), 600);
+    } else {
+      setStatus('status-q2', false, 'نادرست! دوباره تلاش کن.');
+      el.classList.add('err');
+    }
   });
 
   // Q3
   document.getElementById('submit-q3').addEventListener('click', ()=>{
-    const v = readNum('input-q3'), el = document.getElementById('input-q3');
-    if(v === null){ setStatus('status-q3', false, 'لطفاً یک عدد وارد کن.'); el.classList.add('err'); return; }
+    const v = readNum('input-q3');
+    const el = document.getElementById('input-q3');
+    if(v === null){
+      setStatus('status-q3', false, 'لطفاً یک عدد وارد کن.');
+      el.classList.add('err');
+      return;
+    }
     el.classList.remove('err');
     if(v === CORRECT.q3){
       setStatus('status-q3', true, 'درست! تبریک — همهٔ سوال‌ها پاسخ داده شد.');
-      setTimeout(()=> { showStep(6); launchConfetti(); }, 700);
+      setTimeout(()=> {
+        showStep(6);
+        launchConfetti();
+      }, 700);
     } else {
-      setStatus('status-q3', false, 'نادرست! دوباره تلاش کن.'); el.classList.add('err');
+      setStatus('status-q3', false, 'نادرست! دوباره تلاش کن.');
+      el.classList.add('err');
     }
   });
 
-  // done
-  document.getElementById('done-btn').addEventListener('click', ()=> { alert('برای ادامه: دنبال QR دوم بگرد و آن را اسکن کن تا فعالیت بعدی نمایش داده شود.'); });
+  // done button
+  document.getElementById('done-btn').addEventListener('click', ()=>{
+    // here you could navigate to a separate page or close — keep simple
+    alert('هدایت: دنبال QR دوم بگرد و آن را اسکن کن تا فعالیت بعدی نمایش داده شود.');
+  });
 
-  // Enter submits current question
+  // Enter key submits same question
   [['input-q1','submit-q1'],['input-q2','submit-q2'],['input-q3','submit-q3']].forEach(pair=>{
     const input = document.getElementById(pair[0]);
     if(!input) return;
     input.addEventListener('keydown', (e)=> { if(e.key === 'Enter') document.getElementById(pair[1]).click(); });
   });
 
-  // confetti
+  // confetti generator
   function launchConfetti(){
-    const root = document.getElementById('confetti'); root.innerHTML = '';
+    const root = document.getElementById('confetti');
+    root.innerHTML = '';
     const colors = ['#FF6F61','#FFD166','#6EE7B7','#8EC5FF','#F6A5C0','#FFD9B6'];
-    for(let i=0;i<70;i++){
+    for(let i=0;i<60;i++){
       const el = document.createElement('div');
       el.style.position = 'absolute';
-      el.style.left = (Math.random()*100)+'%';
+      el.style.left = (Math.random()*100) + '%';
       el.style.top = (-10 - Math.random()*40) + 'vh';
       el.style.width = (6 + Math.random()*12) + 'px';
       el.style.height = (10 + Math.random()*20) + 'px';
@@ -389,12 +462,18 @@ input::placeholder{ color:#9aa0a6; font-family: var(--font-main) !important; }
       el.style.animation = 'fall ' + (2 + Math.random()*3) + 's linear forwards';
       root.appendChild(el);
     }
-    setTimeout(()=> { root.innerHTML = ''; }, 7000);
+    setTimeout(()=> { root.innerHTML = ''; }, 6500);
   }
 
-  // initial: determine which is visible (step-0 present)
-  for(let i=0;i<steps.length;i++){ const el = document.getElementById(steps[i]); if(el && el.classList.contains('show')){ current = i; break; } }
+  // initialize current step (step-0 is visible in DOM)
+  for(let i=0;i<steps.length;i++){
+    const el = document.getElementById(steps[i]);
+    if(!el) continue;
+    if(el.classList.contains('show')){ current = i; break; }
+  }
+
 })();
 </script>
+
 </body>
 </html>
