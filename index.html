@@ -81,14 +81,13 @@ html,body{
   gap:12px;
   align-items:center;
 }
+/* عنوان مخفی شد */
+.title{ display:none; }
 .logo{
   width:60px; height:60px; border-radius:12px; display:flex; align-items:center; justify-content:center;
   color:#fff; font-weight:900; font-size:18px;
   background: linear-gradient(180deg,var(--accent),var(--accent-2));
   box-shadow: 0 12px 34px rgba(255,111,97,0.16);
-}
-.title{
-  margin:0; font-size:28px; color:var(--accent); line-height:1; font-weight:900;
 }
 /* header right empty intentionally */
 .header-right{ width:20px; height:20px; }
@@ -318,6 +317,24 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
   const steps = ['step-0','step-1','step-2','step-3','step-4','step-5','step-6'];
   let current = 0;
 
+  // زمان شروع برنامه: 31 دسامبر ساعت 8 صبح
+  const startTime = new Date('2025-12-31T10:00:00');
+
+  // بررسی زمان
+  const now = new Date();
+  if(now < startTime){
+    // قبل از زمان مقرر
+    const container = document.querySelector('.container');
+    container.innerHTML = `
+      <div class="step show" style="text-align:center; padding:40px;">
+        <div class="big">خیلی زود اومدی!</div>
+        <div class="text" style="margin-top:12px;">چهارشنبه ساعت ۱۰ صبح باید دوباره اسکن کنی.</div>
+      </div>
+    `;
+    return; // بقیه برنامه اجرا نشه
+  }
+
+  // اگر زمان درست است، مراحل عادی ادامه دارد
   // show step with animated transition
   function showStep(i){
     if(i === current) return;
@@ -432,7 +449,6 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
 
   // done button
   document.getElementById('done-btn').addEventListener('click', ()=>{
-    // here you could navigate to a separate page or close — keep simple
     alert('هدایت: دنبال QR دوم بگرد و آن را اسکن کن تا فعالیت بعدی نمایش داده شود.');
   });
 
