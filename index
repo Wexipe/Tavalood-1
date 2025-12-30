@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="fa">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ماموریت تولد</title>
+
+<!-- فونت وزیر -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir-font-face.css">
+
+<style>
+:root{
+  --bg1:#FFF7F3;
+  --bg2:#FFF0E6;
+  --accent:#FF6F61;
+  --accent-2:#E85B50;
+  --muted:#6f6f6f;
+  --glass: rgba(255,255,255,0.96);
+  --radius:18px;
+  --font: "Vazir", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* پایه */
+* { box-sizing: border-box; }
+html,body{
+  height:100%;
+  margin:0;
+  direction:rtl;
+  font-family: var(--font);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  background:
+    radial-gradient(800px 400px at 10% 10%, rgba(255,231,224,0.55), transparent),
+    linear-gradient(180deg,var(--bg1), var(--bg2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  color:#222;
+}
+
+/* قاب اصلی */
+.container{
+  width:100%;
+  max-width:460px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(255,255,255,0.97));
+  border-radius:var(--radius);
+  padding:20px;
+  position:relative;
+  overflow:hidden;
+  box-shadow: 0 28px 80px rgba(20,20,20,0.12);
+}
+
+/* بیشتر بادکنک‌ها دور کادر */
+.balloon{
+  position:absolute;
+  border-radius:50% 50% 42% 42%;
+  pointer-events:none;
+  transform-origin:center;
+  animation:floatCalc linear infinite;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+  opacity:0.95;
+}
+@keyframes floatCalc {
+  0%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-14px) rotate(6deg); }
+  100%{ transform: translateY(0) rotate(0deg); }
+}
+
+/* header */
+.header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  justify-content:space-between;
+  position:relative;
+  z-index:3;
+}
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.logo{
+  width:60px; height:60px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:900; font-size:18px;
+  background: linear-gradient(180deg,var(--accent),var(--accent-2));
+  box-shadow: 0 12px 34px rgba(255,111,97,0.16);
+}
+.title{
+  margin:0; font-size:28px; color:var(--accent); line-height:1; font-weight:900;
+}
+/* header right empty intentionally */
+.header-right{ width:20px; height:20px; }
+
+/* مراحل */
+.steps{ margin-top:14px; position:relative; z-index:4; }
+.step{
+  display:none;
+  opacity:0;
+  transform: translateY(10px) scale(0.996);
+  transition: opacity 360ms cubic-bezier(.2,.9,.3,1), transform 360ms cubic-bezier(.2,.9,.3,1);
+  border-radius:14px;
+  padding:16px;
+  background: var(--glass);
+  border:1px solid rgba(0,0,0,0.035);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+}
+.step.show{
+  display:block;
+  opacity:1;
+  transform: translateY(0) scale(1);
+}
+.step.hide{
+  opacity:0;
+  transform: translateY(-12px) scale(0.99);
+}
+
+/* متن‌ها */
+.big{ font-size:18px; font-weight:800; color:#333; margin-bottom:8px; }
+.text{ color:var(--muted); font-size:15px; line-height:1.8; white-space:pre-line; }
+
+/* کنترل‌ها و دکمه‌ها */
+.controls{ margin-top:14px; display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
+.btn{
+  font-family: var(--font);
+  background: linear-gradient(180deg,var(--accent),var(--accent-2));
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:800;
+  box-shadow: 0 10px 30px rgba(255,111,97,0.12);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn:active{ transform: translateY(1px) scale(.997); }
+.btn:hover{ filter:brightness(1.03); box-shadow: 0 14px 38px rgba(255,111,97,0.16); }
+.btn.ghost{ background:transparent; color:var(--accent); border:1px solid rgba(255,111,97,0.12); box-shadow:none; font-weight:800; }
+
+/* فیلد ورودی — کیبورد عددی در موبایل */
+.input{ margin-top:12px; }
+input[type="tel"]{
+  width:100%;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1.5px solid #e9e9e9;
+  font-size:15px;
+  text-align:center;
+  direction:ltr;
+  font-family: Vazir, sans-serif;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
+
+/* وضعیت پاسخ */
+.status{ margin-top:10px; font-weight:800; }
+.status.ok{ color:#198754; }
+.status.bad{ color:#d64545; }
+
+/* progress */
+.progress{ margin-top:10px; color:var(--muted); font-size:13px; }
+
+/* confetti */
+.confetti-root{ position:absolute; inset:0; pointer-events:none; z-index:2; overflow:hidden; }
+
+/* small responsiveness */
+@media (max-width:420px){
+  .container{ padding:16px; border-radius:14px; }
+  .title{ font-size:24px; }
+  .logo{ width:52px; height:52px; font-size:16px; }
+  input[type="tel"]{ padding:10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container" role="main" aria-live="polite">
+
+  <!-- more balloons around the frame -->
+  <div class="balloon" style="left:-18px; top:-30px; width:120px; height:150px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation-duration:6s;"></div>
+  <div class="balloon" style="left:320px; top:-28px; width:96px; height:122px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation-duration:5.2s;"></div>
+  <div class="balloon" style="left:-40px; bottom:-36px; width:88px; height:114px; background:linear-gradient(180deg,#8EC5FF,#6DBCFD); animation-duration:6.2s;"></div>
+  <div class="balloon" style="left:60%; bottom:-46px; width:72px; height:94px; background:linear-gradient(180deg,#6EE7B7,#4FD1A8); animation-duration:5.6s;"></div>
+  <div class="balloon" style="left:10%; top:12%; width:46px; height:62px; background:linear-gradient(180deg,#FFD166,#FFB86B); animation-duration:4.4s;"></div>
+  <div class="balloon" style="left:78%; top:8%; width:56px; height:76px; background:linear-gradient(180deg,#FF9AA2,#FF6F61); animation-duration:4s;"></div>
+
+  <!-- header -->
+  <div class="header">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">WX</div>
+      <div>
+        <h1 class="title">ماموریت تولد</h1>
+      </div>
+    </div>
+    <div class="header-right" aria-hidden="true"></div>
+  </div>
+
+  <!-- steps content -->
+  <div class="steps">
+
+    <!-- step 0 -->
+    <section id="step-0" class="step show" aria-label="خوش آمد">
+      <div class="big">سلام محسن!</div>
+      <div class="text">امروز قراره وارد یک مأموریت بشی.</div>
+      <div class="controls">
+        <button class="btn" data-action="next">ادامه</button>
+      </div>
+    </section>
+
+    <!-- step 1 -->
+    <section id="step-1" class="step" aria-label="توضیح کلی">
+      <div class="big">چطور قراره پیش بریم</div>
+      <div class="text">برای رسیدن به کادو باید چند مرحله را پشت سر بگذاری. هر مرحله یک بخش جداست: ابتدا توضیح می‌دهیم، سپس باید یک کار یا سؤال را حل کنی و در نهایت اگر موفق شدی بخش بعدی باز می‌شود. هر تکه که دیدی دکمهٔ «ادامه» را بزن تا بریم سراغ بخش بعد.</div>
+      <div class="controls">
+        <button class="btn" data-action="next">ادامه</button>
+        <button class="btn ghost" data-action="back">برگشت</button>
+      </div>
+    </section>
+
+    <!-- step 2 -->
+    <section id="step-2" class="step" aria-label="معرفی مرحله اول">
+      <div class="big">مرحلهٔ اول — آزمون هوش</div>
+      <div class="text">در این مرحله باید به ۳ سؤال عددی پاسخ دهی. هر سؤال جداست: بعد از دیدن هر سؤال، پاسخ را وارد کن و روی «ثبت پاسخ» بزن. اگر جواب درست بود، به سؤال بعدی می‌روی. اگر غلط بود پیام «نادرست!» نمایش داده می‌شود و می‌توانی دوباره امتحان کنی.</div>
+      <div class="controls">
+        <button class="btn" id="start-quiz">شروع مرحلهٔ اول</button>
+        <button class="btn ghost" data-action="back">برگشت</button>
+      </div>
+    </section>
+
+    <!-- step 3 (q1) -->
+    <section id="step-3" class="step" aria-label="سوال اول">
+      <div class="big">سؤال ۱</div>
+      <div class="text">
+        <div style="font-weight:800; margin-bottom:6px;">در الگوی زیر دنباله را ببین:</div>
+        <div style="color:var(--muted); margin-bottom:8px;">3 , 7 , 11 , 15 , ...</div>
+        <div>در این الگو، شمارهٔ <strong>73</strong> چه عددی است؟</div>
+      </div>
+
+      <div class="input">
+        <input id="input-q1" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="جواب را اینجا بنویس" aria-label="پاسخ سوال اول" />
+        <div id="status-q1" class="status" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="submit-q1">ثبت پاسخ</button>
+        <button class="btn ghost" data-action="back">برگشت</button>
+      </div>
+      <div class="progress">سوال 1 از 3</div>
+    </section>
+
+    <!-- step 4 (q2) -->
+    <section id="step-4" class="step" aria-label="سوال دوم">
+      <div class="big">سؤال ۲</div>
+      <div class="text">
+        <div style="font-weight:800; margin-bottom:6px;">منطق و زمان</div>
+        اگر ۳ گربه در ۳ دقیقه، ۳ موش بگیرند، پس ۱۰۰ گربه در ۱۰۰ دقیقه چند موش می‌گیرند؟
+      </div>
+
+      <div class="input">
+        <input id="input-q2" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="جواب را اینجا بنویس" aria-label="پاسخ سوال دوم" />
+        <div id="status-q2" class="status" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="submit-q2">ثبت پاسخ</button>
+        <button class="btn ghost" data-action="back">برگشت</button>
+      </div>
+      <div class="progress">سوال 2 از 3</div>
+    </section>
+
+    <!-- step 5 (q3) -->
+    <section id="step-5" class="step" aria-label="سوال سوم">
+      <div class="big">سؤال ۳</div>
+      <div class="text">
+        <div style="font-weight:800; margin-bottom:6px;">تمرکز و شمارش</div>
+        عدد <strong>4</strong> چند بار در اعداد 1 تا 50 تکرار شده است؟
+      </div>
+
+      <div class="input">
+        <input id="input-q3" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="جواب را اینجا بنویس" aria-label="پاسخ سوال سوم" />
+        <div id="status-q3" class="status" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="submit-q3">ثبت پاسخ</button>
+        <button class="btn ghost" data-action="back">برگشت</button>
+      </div>
+      <div class="progress">سوال 3 از 3</div>
+    </section>
+
+    <!-- step 6 success + yard hint -->
+    <section id="step-6" class="step" aria-label="موفقیت">
+      <div class="big">تبریک — مرحلهٔ اول با موفقیت گذرانده شد</div>
+      <div class="text">شما با موفقیت مرحلهٔ اول را رد کردی و الان مرحلهٔ دومه!  
+      <br>
+      برای ادامه باید دنبال یک QR جدید بگردی.  
+      <br>
+      <strong>راهنمایی (رمزی):</strong> برو جایی از خونه که ماشین ها توش پارک شدند و بقل جایی که آب رد میشه و میاد به بالا. رو خوب نگاه کن.
+      <br>
+      وقتی QR دوم را اسکن کنی، فعالیتِ بعدی نمایش داده خواهد شد.</div>
+
+      <div class="controls">
+        <button class="btn" id="done-btn">باشه، می‌روم</button>
+      </div>
+    </section>
+
+  </div> <!-- steps -->
+
+  <!-- confetti root -->
+  <div class="confetti-root" id="confetti"></div>
+
+</div> <!-- container -->
+
+<script>
+(function(){
+  const steps = ['step-0','step-1','step-2','step-3','step-4','step-5','step-6'];
+  let current = 0;
+
+  // show step with animated transition
+  function showStep(i){
+    if(i === current) return;
+    const from = document.getElementById(steps[current]);
+    const to = document.getElementById(steps[i]);
+    if(!to) return;
+    // animate out
+    from.classList.add('hide');
+    setTimeout(()=>{
+      from.classList.remove('show','hide');
+      to.classList.add('show');
+      current = i;
+      // focus input if question
+      if(i >= 3 && i <=5){
+        const id = ['input-q1','input-q2','input-q3'][i-3];
+        setTimeout(()=> { const el = document.getElementById(id); if(el) el.focus(); }, 200);
+      }
+    }, 220);
+  }
+
+  // setup next/back controls
+  document.querySelectorAll('[data-action="next"]').forEach(btn=>{
+    btn.addEventListener('click', ()=> showStep(Math.min(current+1, steps.length-1)));
+  });
+  document.querySelectorAll('[data-action="back"]').forEach(btn=>{
+    btn.addEventListener('click', ()=> showStep(Math.max(current-1,0)));
+  });
+
+  // start quiz
+  const startBtn = document.getElementById('start-quiz');
+  if(startBtn) startBtn.addEventListener('click', ()=> showStep(3));
+
+  // correct answers
+  const CORRECT = { q1: 73*4 -1, q2:100, q3:15 };
+
+  function readNum(id){
+    const el = document.getElementById(id);
+    if(!el) return null;
+    const v = el.value.trim();
+    if(v === '') return null;
+    const n = Number(v);
+    return Number.isFinite(n) ? Math.trunc(n) : null;
+  }
+
+  function setStatus(id, ok, msg){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.textContent = msg || (ok ? 'درست!' : 'نادرست!');
+    el.classList.toggle('ok', ok);
+    el.classList.toggle('bad', !ok);
+  }
+
+  // Q1
+  document.getElementById('submit-q1').addEventListener('click', ()=>{
+    const v = readNum('input-q1');
+    const el = document.getElementById('input-q1');
+    if(v === null){
+      setStatus('status-q1', false, 'لطفاً یک عدد وارد کن.');
+      el.classList.add('err');
+      return;
+    }
+    el.classList.remove('err');
+    if(v === CORRECT.q1){
+      setStatus('status-q1', true, 'درست! آمادهٔ سوال بعدی...');
+      setTimeout(()=> showStep(4), 600);
+    } else {
+      setStatus('status-q1', false, 'نادرست! دوباره تلاش کن.');
+      el.classList.add('err');
+    }
+  });
+
+  // Q2
+  document.getElementById('submit-q2').addEventListener('click', ()=>{
+    const v = readNum('input-q2');
+    const el = document.getElementById('input-q2');
+    if(v === null){
+      setStatus('status-q2', false, 'لطفاً یک عدد وارد کن.');
+      el.classList.add('err');
+      return;
+    }
+    el.classList.remove('err');
+    if(v === CORRECT.q2){
+      setStatus('status-q2', true, 'درست! آمادهٔ سوال بعدی...');
+      setTimeout(()=> showStep(5), 600);
+    } else {
+      setStatus('status-q2', false, 'نادرست! دوباره تلاش کن.');
+      el.classList.add('err');
+    }
+  });
+
+  // Q3
+  document.getElementById('submit-q3').addEventListener('click', ()=>{
+    const v = readNum('input-q3');
+    const el = document.getElementById('input-q3');
+    if(v === null){
+      setStatus('status-q3', false, 'لطفاً یک عدد وارد کن.');
+      el.classList.add('err');
+      return;
+    }
+    el.classList.remove('err');
+    if(v === CORRECT.q3){
+      setStatus('status-q3', true, 'درست! تبریک — همهٔ سوال‌ها پاسخ داده شد.');
+      setTimeout(()=> {
+        showStep(6);
+        launchConfetti();
+      }, 700);
+    } else {
+      setStatus('status-q3', false, 'نادرست! دوباره تلاش کن.');
+      el.classList.add('err');
+    }
+  });
+
+  // done button
+  document.getElementById('done-btn').addEventListener('click', ()=>{
+    // here you could navigate to a separate page or close — keep simple
+    alert('هدایت: دنبال QR دوم بگرد و آن را اسکن کن تا فعالیت بعدی نمایش داده شود.');
+  });
+
+  // Enter key submits same question
+  [['input-q1','submit-q1'],['input-q2','submit-q2'],['input-q3','submit-q3']].forEach(pair=>{
+    const input = document.getElementById(pair[0]);
+    if(!input) return;
+    input.addEventListener('keydown', (e)=> { if(e.key === 'Enter') document.getElementById(pair[1]).click(); });
+  });
+
+  // confetti generator
+  function launchConfetti(){
+    const root = document.getElementById('confetti');
+    root.innerHTML = '';
+    const colors = ['#FF6F61','#FFD166','#6EE7B7','#8EC5FF','#F6A5C0','#FFD9B6'];
+    for(let i=0;i<60;i++){
+      const el = document.createElement('div');
+      el.style.position = 'absolute';
+      el.style.left = (Math.random()*100) + '%';
+      el.style.top = (-10 - Math.random()*40) + 'vh';
+      el.style.width = (6 + Math.random()*12) + 'px';
+      el.style.height = (10 + Math.random()*20) + 'px';
+      el.style.background = colors[Math.floor(Math.random()*colors.length)];
+      el.style.borderRadius = '3px';
+      el.style.opacity = '0.95';
+      el.style.transform = 'rotate(' + (Math.random()*360) + 'deg)';
+      el.style.animation = 'fall ' + (2 + Math.random()*3) + 's linear forwards';
+      root.appendChild(el);
+    }
+    setTimeout(()=> { root.innerHTML = ''; }, 6500);
+  }
+
+  // initialize current step (step-0 is visible in DOM)
+  for(let i=0;i<steps.length;i++){
+    const el = document.getElementById(steps[i]);
+    if(!el) continue;
+    if(el.classList.contains('show')){ current = i; break; }
+  }
+
+})();
+</script>
+
+</body>
+</html>
