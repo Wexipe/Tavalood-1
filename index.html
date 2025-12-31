@@ -232,9 +232,7 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
     <section id="step-3" class="step" aria-label="سوال اول">
       <div class="big">سؤال ۱</div>
       <div class="text">
-        <div style="font-weight:800; margin-bottom:6px;">در الگوی زیر دنباله را ببین:</div>
-        <div style="color:var(--muted); margin-bottom:8px;">3 , 7 , 11 , 15 , ...</div>
-        <div>در این الگو، شمارهٔ <strong>73</strong> چه عددی است؟</div>
+        هر شبانه‌روز چند ثانیه است؟
       </div>
 
       <div class="input">
@@ -253,8 +251,9 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
     <section id="step-4" class="step" aria-label="سوال دوم">
       <div class="big">سؤال ۲</div>
       <div class="text">
-        <div style="font-weight:800; margin-bottom:6px;">منطق و زمان</div>
-        اگر ۳ گربه در ۳ دقیقه، ۳ موش بگیرند، پس ۱۰۰ گربه در ۱۰۰ دقیقه چند موش می‌گیرند؟
+        یک عدد دو رقمی داریم که:
+        <br>مجموع رقم‌هایش برابر با ۱۰ است.
+        <br>اگر جای رقم‌ها را عوض کنیم، عدد جدید ۳۶ واحد کمتر از عدد اولیه می‌شود.
       </div>
 
       <div class="input">
@@ -323,7 +322,6 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
   // بررسی زمان
   const now = new Date();
   if(now < startTime){
-    // قبل از زمان مقرر
     const container = document.querySelector('.container');
     container.innerHTML = `
       <div class="step show" style="text-align:center; padding:40px;">
@@ -331,23 +329,19 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
         <div class="text" style="margin-top:12px;">چهارشنبه ساعت ۱۰ صبح باید دوباره اسکن کنی.</div>
       </div>
     `;
-    return; // بقیه برنامه اجرا نشه
+    return;
   }
 
-  // اگر زمان درست است، مراحل عادی ادامه دارد
-  // show step with animated transition
   function showStep(i){
     if(i === current) return;
     const from = document.getElementById(steps[current]);
     const to = document.getElementById(steps[i]);
     if(!to) return;
-    // animate out
     from.classList.add('hide');
     setTimeout(()=>{
       from.classList.remove('show','hide');
       to.classList.add('show');
       current = i;
-      // focus input if question
       if(i >= 3 && i <=5){
         const id = ['input-q1','input-q2','input-q3'][i-3];
         setTimeout(()=> { const el = document.getElementById(id); if(el) el.focus(); }, 200);
@@ -355,7 +349,6 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
     }, 220);
   }
 
-  // setup next/back controls
   document.querySelectorAll('[data-action="next"]').forEach(btn=>{
     btn.addEventListener('click', ()=> showStep(Math.min(current+1, steps.length-1)));
   });
@@ -363,12 +356,11 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
     btn.addEventListener('click', ()=> showStep(Math.max(current-1,0)));
   });
 
-  // start quiz
   const startBtn = document.getElementById('start-quiz');
   if(startBtn) startBtn.addEventListener('click', ()=> showStep(3));
 
   // correct answers
-  const CORRECT = { q1: 73*4 -1, q2:100, q3:15 };
+  const CORRECT = { q1: 86400, q2: 73, q3: 15 };
 
   function readNum(id){
     const el = document.getElementById(id);
@@ -452,14 +444,12 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
     alert('هدایت: دنبال QR دوم بگرد و آن را اسکن کن تا فعالیت بعدی نمایش داده شود.');
   });
 
-  // Enter key submits same question
   [['input-q1','submit-q1'],['input-q2','submit-q2'],['input-q3','submit-q3']].forEach(pair=>{
     const input = document.getElementById(pair[0]);
     if(!input) return;
     input.addEventListener('keydown', (e)=> { if(e.key === 'Enter') document.getElementById(pair[1]).click(); });
   });
 
-  // confetti generator
   function launchConfetti(){
     const root = document.getElementById('confetti');
     root.innerHTML = '';
@@ -481,7 +471,6 @@ input::placeholder{ font-family: Vazir, sans-serif; color:#9aa0a6; }
     setTimeout(()=> { root.innerHTML = ''; }, 6500);
   }
 
-  // initialize current step (step-0 is visible in DOM)
   for(let i=0;i<steps.length;i++){
     const el = document.getElementById(steps[i]);
     if(!el) continue;
